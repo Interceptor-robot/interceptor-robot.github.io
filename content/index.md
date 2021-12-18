@@ -70,27 +70,20 @@ The robot is able to successfully predict where the ball will fall from the tabl
 
 # Team
 
-Ryan Adolf
-Pic:
 
-Bio: It’s my third year at Berkeley majoring in EECS. I love engineering, design, art, and just making stuff in general!
+{{< profile name="Robert Peltekov" image="/robert.jpg" >}}
+A junior double majoring in EECS and Business at UC Berkeley. Love everything engineering-related from robotics, hardware design to space! In freetime I love to skate both in parks and down hills!
+{{< /profile >}}
 
+{{< profile name="Saahil Parikh" image="/saahil.jpg" >}}
+A third year eecs student.
+{{< /profile >}}
 
-Robert Peltekov
-Pic:
-
-Bio: A junior double majoring in EECS and Business at UC Berkeley. Love everything engineering-related from robotics, hardware design to space! In freetime I love to skate both in parks and down hills!
-
-
-Saahil Parikh
-Pic:
-
-Bio: A third year eecs student.
+{{< profile name="Ryan Adolf" image="/ryan.jpg" >}}
+It’s my third year at Berkeley majoring in EECS. I love engineering, design, art, and just making stuff in general!
+{{< /profile >}}
 
 
-Video 1
-
-Video 2
 
 Playlist Link
 
