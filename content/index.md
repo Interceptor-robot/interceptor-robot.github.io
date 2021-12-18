@@ -11,7 +11,7 @@ author: ["Robert Peltekov", "Saahil Parikh", "Ryan Adolf"]
 
 Interceptor is a robot that can stop objects from rolling off a table. It detects a moving tennis ball, predicts where the ball will roll off the table, then moves its gripper to cut off the ball’s path.
 
-Our application shows how robots can quickly predict outcomes of physical situations and respond to them. Potential applications may be ensuring safety in environments where robots work (e.g. if a part goes flying, can the robot stop it from hitting a human?) or working with humans (e.g. performing daycare for a baby that’s throwing its toys around).
+Our application shows how robots can quickly predict outcomes of physical situations and respond to them. Potential applications may be ensuring safety in environments where robots work *(e.g. if a part goes flying, can the robot stop it from hitting a human?)* or working with humans *(e.g. performing daycare for a baby that’s throwing its toys around)*.
 
 # Design Criteria
 
@@ -20,19 +20,25 @@ The robot must be able to:
 2. Accurately detect the position of the tennis ball.
 3. Accurately determine the trajectory of the tennis ball, with minimal noise.
 4. Move its gripper to intercept the tennis ball, but avoid hitting the table.
-5. Perform steps 2-3 fast enough to intercept the ball before it rolls off.
+5. Perform steps 2-4 fast enough to intercept the ball before it rolls off.
 
 # Trade-offs
 - **Vision system**: We had to choose between making our position prediction fast versus making it accurate. We chose accuracy because any noise in the position data will make velocity data even noisier. So we chose to use a Kinect with point cloud data and process images at medium resolution, compared to faster solution like using a non-depth camera or sampling at lower resolution.
 - **Kalman filter**: There’s an inherent tradeoff between exactly following input data and relying on the predicted state. We tuned the filter to closely fit the input data with a small amount of estimation since the ball movements can be erratic.
-- **Flexibility of motion planning**: We chose to use the ROS MoveIt package to do motion planning for our arm. The package is flexible enough that it allows us to intercept the ball no matter what the height of the table is and also avoid hitting the table. However, MoveIt is slow and we considered replacing it with a custom solution like other teams have done. We evaluated using a hashmap to find joint positions, but this approach does not simultaneously meet our flexibility and obstacle avoidance requirements.
+- **Flexibility of motion planning**: We chose to use the ROS MoveIt package to do motion planning for our arm. The package is flexible enough that it allows us to intercept the ball no matter the height of the table and avoid hitting the table. However, MoveIt is slow and we considered replacing it with a custom solution like other teams have done. We evaluated using a hashmap to find joint positions, but this approach does not simultaneously meet our flexibility and obstacle avoidance requirements.
 
 # Implementation
 
 ## Hardware
-- Sawyer: Multi jointed arm robot
-- Intel Realsense: Time of Flight Depth Camera
-- Tennis Ball: Test object
+
+| Component         | Description                 |
+|-------------------|-----------------------------|
+| [Sawyer]          | Multi-jointed arm robot     |
+| [Intel Realsense] | Time of Flight Depth Camera |
+| Tennis Ball       | Test object                 |
+
+[Sawyer]: https://www.rethinkrobotics.com/sawyer
+[Intel Realsense]: https://www.intelrealsense.com/
 
 ## Software
 
@@ -41,13 +47,21 @@ Our code: <a href="https://github.com/SaahilParikh/Interceptor">https://github.c
 {{< /ourcode >}}
 
 ### AR Alvar node
-We use two ar_track_alvar nodes for detecting AR tags on the table in the viewport of the depth camera and the robot:
+We use two [ar_track_alvar] nodes for detecting AR tags on the table in the viewport of the depth camera and the robot:
 For the camera, we run a standard ar_track_alvar node. This node runs for the whole duration of the project, and the camera is always in view of the ar tag.
 For the robot, we modified a copy of the ar_track_alvar source to publish transforms from the Sawyer arm camera with different names. This node only runs for the initialization phase of operation where the arm is in position to see the non moving ar tag. After Initialization is over and the static transform of the ar tag to the robot is published, this node shuts down.
+
+[ar_track_alvar]: http://wiki.ros.org/ar_track_alvar
+
 ### Tf Broadcaster node
 This node publishes a static transform from the ar tag to the base of the robot
 ### Ball segment node
 Using OpenCV, the Ball Segment node publishes the current position of the ball relative to the constructed TF reference tree. The segmentation of the images happens in the following manner:
+
+
+
+{{< figure src="/cv.jpg" title="Our computer vision pipeline" >}}
+
 
 1. Transform color RGB image from HSV (hue, saturation, value)
 2. Threshold filter for the tennis ball neon green yellow hue
@@ -60,14 +74,14 @@ Using OpenCV, the Ball Segment node publishes the current position of the ball r
 ### Motion predict node
 Using the ball coordinates transformed relative to the reference frame AR tag on the table. The node uses a Kalman filter to smooth position data and predict the velocity. With the predicted velocity, the node determines where the ball will intersect the edge of the table.
 ### IK node
-Using the goal position from the motion predict node, we run ik using tracik to move sawyers gripper to the goal position. ik is implemented using move it which also allows us to implement obstacle avoidance to not hit the table or the side walls. The ik node waits for the goal position to update ( using std and stats to define update ) and then quickly moved sawyers multijointed arm. the ik solver uses distance to assist in the rtt search over the space.
+Using the goal position from the motion predict node, we run IK using tracik to move sawyers gripper to the goal position. IK is implemented using move it which also allows us to implement obstacle avoidance to not hit the table or the side walls. The IK node waits for the goal position to update (using std and stats to define update) and then quickly moves sawyers multijointed arm. The IK solver uses distance to assist in the RTT search over the space.
 ### Realsense node
-We use Intel’s ROS package for the Realsense camera to publish point clouds and images from the depth camera.
+We use [Intel’s ROS package for the Realsense camera](https://github.com/IntelRealSense/realsense-ros) to publish point clouds and images from the depth camera.
 Additionally the realsense node takes care of the following functions: Unwarping the camera image using the camera matrix; Computing the color image projection onto the depth cloud and publishing the combined point cloud.
 ### MoveIt node
 The MoveIt node performs inverse kinematics and path planning, creating a series of steps of joint angles for the Sawyer to move to so that it reaches a desired end effector position without hitting the table.
 ### Joint trajectory action server node
-Not a node that we made. this node is to allow sawyer to know it’s joints?
+This node is to allow sawyer to know about its joints.
 
 # Results
 
