@@ -81,17 +81,9 @@ A junior double majoring in EECS and Business at UC Berkeley. Love everything en
 {{< /profile >}}
 
 {{< profile name="Saahil Parikh" image="/saahil.jpg" >}}
-A third year eecs student.
+A third year eecs student. I’m a designer and creator. I love taking ideas from conception to fruition.
 {{< /profile >}}
 
 {{< profile name="Ryan Adolf" image="/ryan.jpg" >}}
 It’s my third year at Berkeley majoring in EECS. I love engineering, design, art, and just making stuff in general!
 {{< /profile >}}
-
-----
-
-# Demo Day Presentation
-
-<div style="position: relative; padding-bottom: 61.25%; height: 0; overflow: hidden;">
-  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQupm6jq58CvvSuSTmhdv3kLBg41_WNj4BERRBdKcsQbPSMDoHZ8UJmelcilAyYsgLP-digruSQ76fV/embed" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="Google Slides Presentation"></iframe>
-</div>
