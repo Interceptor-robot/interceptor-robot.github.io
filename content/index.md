@@ -2,6 +2,7 @@
 title: "Inteceptor Robot: Final report"
 date: 2021-12-17T20:36:16-08:00
 draft: false
+author: ["Robert Peltekov", "Saahil Parikh", "Ryan Adolf"]
 ---
 
 {{< youtube a_u6m24022I >}}
@@ -83,8 +84,8 @@ A third year eecs student.
 It’s my third year at Berkeley majoring in EECS. I love engineering, design, art, and just making stuff in general!
 {{< /profile >}}
 
+----
 
-
-Playlist Link
-
-Link to final presentation!
+{{< icon >}}
+Our code: <a href="https://github.com/SaahilParikh/Interceptor">https://github.com/SaahilParikh/Interceptor</a>
+{{< /icon >}}
