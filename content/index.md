@@ -10,16 +10,16 @@ draft: false
 
 Interceptor is a robot that can stop objects from rolling off a table. It detects a moving tennis ball, predicts where the ball will roll off the table, then moves its gripper to cut off the ball’s path. Our application shows how robots can quickly predict outcomes of physical situations and respond to them. Potential applications may be ensuring safety in environments where robots work (e.g. if a part goes flying, can the robot stop it from hitting a human?) or working with humans (e.g. performing daycare for a baby that’s throwing its toys around).
 
-# Design
+# Design Criteria
 
-Design criteria: the robot must be able to:
+The robot must be able to:
 1. Use AR tags to figure out how the camera, robot, and table are positioned relative to each other.
 2. Accurately detect the position of the tennis ball.
 3. Accurately determine the trajectory of the tennis ball, with minimal noise.
 4. Move its gripper to intercept the tennis ball, but avoid hitting the table.
 5. Perform steps 2-3 fast enough to intercept the ball before it rolls off.
 
-Trade-offs:
+# Trade-offs
 - Vision system: We had to choose between making our position prediction fast versus making it accurate. We chose accuracy because our design criteria because any noise in the position data will make velocity data even noisier. For this reason we chose to use a Kinect with point cloud data and process images at medium resolution, compared to faster solution like using a non-depth camera or sampling at lower resolution.
 - Kalman filter: There’s an inherent tradeoff between exactly following input data and relying on the predicted state. We tuned the filter to closely fit the input data with a small amount of estimation since the ball movements can be erratic.
 - Flexibility of motion planning: We chose to use the ROS MoveIt package to do motion planning for our arm. The package is flexible enough that it allows us to intercept the ball no matter what the height of the table is and also avoid hitting the table. However, MoveIt is slow and we considered replacing it with a custom solution like other teams have done. We evaluated using a hashmap to find joint positions, but this approach does not simultaneously meet our flexibility and obstacle avoidance requirements.
@@ -61,6 +61,9 @@ The MoveIt node performs inverse kinematics and path planning, creating a series
 ### Joint trajectory action server node
 Not a node that we made. this node is to allow sawyer to know it’s joints?
 # Results
+
+{{< youtube BneLKw1n3bc >}}
+
 The robot is able to successfully predict where the ball will fall from the table and move its gripper to this spot; our only major issue is the lag in the system, which causes the robot to move a few seconds after the ball has started rolling.
 
 # Conclusion
