@@ -48,13 +48,14 @@ Our code: <a href="https://github.com/SaahilParikh/Interceptor">https://github.c
 
 ### AR Alvar node
 We use two [ar_track_alvar] nodes for detecting AR tags on the table in the viewport of the depth camera and the robot:
-For the camera, we run a standard ar_track_alvar node. This node runs for the whole duration of the project, and the camera is always in view of the ar tag.
-For the robot, we modified a copy of the ar_track_alvar source to publish transforms from the Sawyer arm camera with different names. This node only runs for the initialization phase of operation where the arm is in position to see the non moving ar tag. After Initialization is over and the static transform of the ar tag to the robot is published, this node shuts down.
+For the camera, we run a standard ar_track_alvar node. This node runs for the whole duration of the project, and the camera is always in view of the AR tag.
+
+For the robot, we modified a copy of the ar_track_alvar source to publish transforms from the Sawyer arm camera with different names. This node only runs for the initialization phase of operation where the arm is in position to see the non moving AR tag. After Initialization is over and the static transform of the AR tag to the robot is published, this node shuts down.
 
 [ar_track_alvar]: http://wiki.ros.org/ar_track_alvar
 
 ### Tf Broadcaster node
-This node publishes a static transform from the ar tag to the base of the robot
+This node publishes a static transform from the AR tag to the base of the robot
 ### Ball segment node
 Using OpenCV, the Ball Segment node publishes the current position of the ball relative to the constructed TF reference tree. The segmentation of the images happens in the following manner:
 
@@ -71,15 +72,19 @@ Using OpenCV, the Ball Segment node publishes the current position of the ball r
 6. Mask the depth points with the segmented ball image
 7. Calculate the center point from the resulting masked set of depth points
 8. Publish the center point in the space of the camera frame
+
+The ball position is published through [tf2](http://wiki.ros.org/tf2) as a `TransformStamped`.
 ### Motion predict node
 Using the ball coordinates transformed relative to the reference frame AR tag on the table. The node uses a Kalman filter to smooth position data and predict the velocity. With the predicted velocity, the node determines where the ball will intersect the edge of the table.
+
+Both the filtered ball position and the predicted intersection point are published as `TransformStamped` messages through [tf2](http://wiki.ros.org/tf2).
 ### IK node
-Using the goal position from the motion predict node, we run IK using tracik to move sawyers gripper to the goal position. IK is implemented using move it which also allows us to implement obstacle avoidance to not hit the table or the side walls. The IK node waits for the goal position to update (using std and stats to define update) and then quickly moves sawyers multijointed arm. The IK solver uses distance to assist in the RTT search over the space.
+Using the goal position from the motion predict node, we run IK using tracik to move sawyers gripper to the goal position. IK is implemented using MoveIt which also allows us to implement obstacle avoidance to not hit the table or the side walls. The IK node waits for the goal position to update (using std and stats to define update) and then quickly moves sawyers multijointed arm. The IK solver uses distance to assist in the RTT search over the space.
 ### Realsense node
 We use [Intel’s ROS package for the Realsense camera](https://github.com/IntelRealSense/realsense-ros) to publish point clouds and images from the depth camera.
 Additionally the realsense node takes care of the following functions: Unwarping the camera image using the camera matrix; Computing the color image projection onto the depth cloud and publishing the combined point cloud.
 ### MoveIt node
-The MoveIt node performs inverse kinematics and path planning, creating a series of steps of joint angles for the Sawyer to move to so that it reaches a desired end effector position without hitting the table.
+The [MoveIt node](https://moveit.ros.org/) performs inverse kinematics and path planning, creating a series of steps of joint angles for the Sawyer to move to so that it reaches a desired end effector position without hitting the table.
 ### Joint trajectory action server node
 This node is to allow sawyer to know about its joints.
 
