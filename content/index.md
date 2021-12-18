@@ -9,7 +9,9 @@ author: ["Robert Peltekov", "Saahil Parikh", "Ryan Adolf"]
 
 # Introduction
 
-Interceptor is a robot that can stop objects from rolling off a table. It detects a moving tennis ball, predicts where the ball will roll off the table, then moves its gripper to cut off the ball’s path. Our application shows how robots can quickly predict outcomes of physical situations and respond to them. Potential applications may be ensuring safety in environments where robots work (e.g. if a part goes flying, can the robot stop it from hitting a human?) or working with humans (e.g. performing daycare for a baby that’s throwing its toys around).
+Interceptor is a robot that can stop objects from rolling off a table. It detects a moving tennis ball, predicts where the ball will roll off the table, then moves its gripper to cut off the ball’s path.
+
+Our application shows how robots can quickly predict outcomes of physical situations and respond to them. Potential applications may be ensuring safety in environments where robots work (e.g. if a part goes flying, can the robot stop it from hitting a human?) or working with humans (e.g. performing daycare for a baby that’s throwing its toys around).
 
 # Design Criteria
 
@@ -21,9 +23,9 @@ The robot must be able to:
 5. Perform steps 2-3 fast enough to intercept the ball before it rolls off.
 
 # Trade-offs
-- Vision system: We had to choose between making our position prediction fast versus making it accurate. We chose accuracy because our design criteria because any noise in the position data will make velocity data even noisier. For this reason we chose to use a Kinect with point cloud data and process images at medium resolution, compared to faster solution like using a non-depth camera or sampling at lower resolution.
-- Kalman filter: There’s an inherent tradeoff between exactly following input data and relying on the predicted state. We tuned the filter to closely fit the input data with a small amount of estimation since the ball movements can be erratic.
-- Flexibility of motion planning: We chose to use the ROS MoveIt package to do motion planning for our arm. The package is flexible enough that it allows us to intercept the ball no matter what the height of the table is and also avoid hitting the table. However, MoveIt is slow and we considered replacing it with a custom solution like other teams have done. We evaluated using a hashmap to find joint positions, but this approach does not simultaneously meet our flexibility and obstacle avoidance requirements.
+- **Vision system**: We had to choose between making our position prediction fast versus making it accurate. We chose accuracy because any noise in the position data will make velocity data even noisier. So we chose to use a Kinect with point cloud data and process images at medium resolution, compared to faster solution like using a non-depth camera or sampling at lower resolution.
+- **Kalman filter**: There’s an inherent tradeoff between exactly following input data and relying on the predicted state. We tuned the filter to closely fit the input data with a small amount of estimation since the ball movements can be erratic.
+- **Flexibility of motion planning**: We chose to use the ROS MoveIt package to do motion planning for our arm. The package is flexible enough that it allows us to intercept the ball no matter what the height of the table is and also avoid hitting the table. However, MoveIt is slow and we considered replacing it with a custom solution like other teams have done. We evaluated using a hashmap to find joint positions, but this approach does not simultaneously meet our flexibility and obstacle avoidance requirements.
 
 # Implementation
 
@@ -46,6 +48,7 @@ For the robot, we modified a copy of the ar_track_alvar source to publish transf
 This node publishes a static transform from the ar tag to the base of the robot
 ### Ball segment node
 Using OpenCV, the Ball Segment node publishes the current position of the ball relative to the constructed TF reference tree. The segmentation of the images happens in the following manner:
+
 1. Transform color RGB image from HSV (hue, saturation, value)
 2. Threshold filter for the tennis ball neon green yellow hue
 3. Use CV Erosion to smooth image and remove noise
@@ -70,7 +73,13 @@ Not a node that we made. this node is to allow sawyer to know it’s joints?
 
 {{< youtube BneLKw1n3bc >}}
 
-The robot is able to successfully predict where the ball will fall from the table and move its gripper to this spot; our only major issue is the lag in the system, which causes the robot to move a few seconds after the ball has started rolling. If we were to continue this project, we would implement a different inverse kinematics solver utilizing less joints of the sawyer arm to more efficiently compute the IK problem and more easily follow a path within the constrained set of movements we need.
+---
+
+The robot is able to successfully predict where the ball will fall from the table and move its gripper to this spot; our only major issue is the lag in the system, which causes the robot to move a few seconds after the ball has started rolling.
+
+If we were to continue this project, we would implement a different inverse kinematics solver utilizing fewerr joints of the sawyer arm to more efficiently compute the IK problem and more easily follow a path within the constrained set of movements we need.
+
+---
 
 {{< slides >}}
 
