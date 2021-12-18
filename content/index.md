@@ -12,11 +12,11 @@ Interceptor is a robot that can stop objects from rolling off a table. It detect
 # Design
 
 Design criteria: the robot must be able to:
-Use AR tags to figure out how the camera, robot, and table are positioned relative to each other.
-Accurately detect the position of the tennis ball.
-Accurately determine the trajectory of the tennis ball, with minimal noise.
-Move its gripper to intercept the tennis ball, but avoid hitting the table.
-Perform steps 2-3 fast enough to intercept the ball before it rolls off.
+- Use AR tags to figure out how the camera, robot, and table are positioned relative to each other.
+- Accurately detect the position of the tennis ball.
+- Accurately determine the trajectory of the tennis ball, with minimal noise.
+- Move its gripper to intercept the tennis ball, but avoid hitting the table.
+- Perform steps 2-3 fast enough to intercept the ball before it rolls off.
 
 Trade-offs:
 Vision system: We had to choose between making our position prediction fast versus making it accurate. We chose accuracy because our design criteria because any noise in the position data will make velocity data even noisier. For this reason we chose to use a Kinect with point cloud data and process images at medium resolution, compared to faster solution like using a non-depth camera or sampling at lower resolution.
