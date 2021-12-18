@@ -34,6 +34,10 @@ The robot must be able to:
 
 ## Software
 
+{{< ourcode >}}
+Our code: <a href="https://github.com/SaahilParikh/Interceptor">https://github.com/SaahilParikh/Interceptor</a>
+{{< /ourcode >}}
+
 ### AR Alvar node
 We use two ar_track_alvar nodes for detecting AR tags on the table in the viewport of the depth camera and the robot:
 For the camera, we run a standard ar_track_alvar node. This node runs for the whole duration of the project, and the camera is always in view of the ar tag.
@@ -86,6 +90,8 @@ It’s my third year at Berkeley majoring in EECS. I love engineering, design, a
 
 ----
 
-{{< icon >}}
-Our code: <a href="https://github.com/SaahilParikh/Interceptor">https://github.com/SaahilParikh/Interceptor</a>
-{{< /icon >}}
+# Demo Day Presentation
+
+<div style="position: relative; padding-bottom: 61.25%; height: 0; overflow: hidden;">
+  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQupm6jq58CvvSuSTmhdv3kLBg41_WNj4BERRBdKcsQbPSMDoHZ8UJmelcilAyYsgLP-digruSQ76fV/embed" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="Google Slides Presentation"></iframe>
+</div>
