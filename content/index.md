@@ -68,7 +68,7 @@ Not a node that we made. this node is to allow sawyer to know it’s joints?
 
 The robot is able to successfully predict where the ball will fall from the table and move its gripper to this spot; our only major issue is the lag in the system, which causes the robot to move a few seconds after the ball has started rolling. If we were to continue this project, we would implement a different inverse kinematics solver utilizing less joints of the sawyer arm to more efficiently compute the IK problem and more easily follow a path within the constrained set of movements we need.
 
-{{< slides />}}
+{{< slides >}}
 
 # Team
 
