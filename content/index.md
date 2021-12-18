@@ -39,7 +39,7 @@ For the camera, we run a standard ar_track_alvar node. This node runs for the wh
 For the robot, we modified a copy of the ar_track_alvar source to publish transforms from the Sawyer arm camera with different names. This node only runs for the initialization phase of operation where the arm is in position to see the non moving ar tag. After Initialization is over and the static transform of the ar tag to the robot is published, this node shuts down.
 ### Tf Broadcaster node
 This node publishes a static transform from the ar tag to the base of the robot
-Ball segment node
+### Ball segment node
 Using OpenCV, the Ball Segment node publishes the current position of the ball relative to the constructed TF reference tree. The segmentation of the images happens in the following manner:
 1. Transform color RGB image from HSV (hue, saturation, value)
 2. Threshold filter for the tennis ball neon green yellow hue
@@ -60,16 +60,16 @@ Additionally the realsense node takes care of the following functions: Unwarping
 The MoveIt node performs inverse kinematics and path planning, creating a series of steps of joint angles for the Sawyer to move to so that it reaches a desired end effector position without hitting the table.
 ### Joint trajectory action server node
 Not a node that we made. this node is to allow sawyer to know it’s joints?
+
 # Results
 
 {{< youtube BneLKw1n3bc >}}
 
-The robot is able to successfully predict where the ball will fall from the table and move its gripper to this spot; our only major issue is the lag in the system, which causes the robot to move a few seconds after the ball has started rolling.
+The robot is able to successfully predict where the ball will fall from the table and move its gripper to this spot; our only major issue is the lag in the system, which causes the robot to move a few seconds after the ball has started rolling. If we were to continue this project, we would implement a different inverse kinematics solver utilizing less joints of the sawyer arm to more efficiently compute the IK problem and more easily follow a path within the constrained set of movements we need.
 
-# Conclusion
+
 
 # Team
-
 
 {{< profile name="Robert Peltekov" image="/robert.jpg" >}}
 A junior double majoring in EECS and Business at UC Berkeley. Love everything engineering-related from robotics, hardware design to space! In freetime I love to skate both in parks and down hills!
